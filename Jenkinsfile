@@ -17,8 +17,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 dir('projectdone') {
-                    // Use Git Bash for Docker build
-                    sh '''
+                    bat '''
                     docker build -t website-image .
                     '''
                 }
@@ -34,8 +33,7 @@ pipeline {
         stage('Deploy Container') {
             steps {
                 dir('projectdone') {
-                    // Use Git Bash for Docker run
-                    sh '''
+                    bat '''
                     docker run -d -p 80:80 website-image
                     '''
                 }
