@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the repository and navigate to the "projectdone" folder
+                // Checkout the repository from the main branch
                 git branch: 'main', url: 'https://github.com/Arsalwali00/E_Web.git'
             }
         }
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 dir('projectdone') {
                     // Build Docker image from projectdone folder
-                    sh 'docker build -t website-image .'
+                    bat 'docker build -t website-image .'
                 }
             }
         }
@@ -36,7 +36,7 @@ pipeline {
             steps {
                 dir('projectdone') {
                     // Deploy Docker container, exposing it to port 80
-                    sh 'docker run -d -p 80:80 website-image'
+                    bat 'docker run -d -p 80:80 website-image'
                 }
             }
         }
