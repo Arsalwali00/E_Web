@@ -4,6 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
+                // Checkout the repository from the main branch
                 git branch: 'main', url: 'https://github.com/Arsalwali00/E_Web.git'
             }
         }
@@ -17,8 +18,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 dir('projectdone') {
-                    // Call Git Bash explicitly in a bat command
-                    bat '"C:\\Program Files\\Git\\bin\\bash.exe" -c "docker build -t website-image ."'
+                    // Use Git Bash to build Docker image
+                    sh '''
+                    docker build -t website-image .
+                    '''
                 }
             }
         }
@@ -32,8 +35,10 @@ pipeline {
         stage('Deploy Container') {
             steps {
                 dir('projectdone') {
-                    // Call Git Bash explicitly in a bat command
-                    bat '"C:\\Program Files\\Git\\bin\\bash.exe" -c "docker run -d -p 80:80 website-image"'
+                    // Use Git Bash to deploy Docker container
+                    sh '''
+                    docker run -d -p 80:80 website-image
+                    '''
                 }
             }
         }
