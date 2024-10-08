@@ -55,9 +55,8 @@ pipeline {
         always {
             echo 'Cleaning up Docker containers...'
             bat '''
-            docker ps -a
-            docker stop $(docker ps -a -q --filter ancestor=${IMAGE_NAME})
-            docker rm $(docker ps -a -q --filter ancestor=${IMAGE_NAME})
+            for /f "tokens=*" %i in ('docker ps -a -q --filter ancestor=${IMAGE_NAME}') do docker stop %i
+            for /f "tokens=*" %i in ('docker ps -a -q --filter ancestor=${IMAGE_NAME}') do docker rm %i
             '''
         }
         success {
