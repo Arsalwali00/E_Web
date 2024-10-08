@@ -4,26 +4,40 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Pull code from GitHub
-                git 'https://github.com/Arsalwali00/E_Web.git'
+                // Checkout the repository and navigate to the "projectdone" folder
+                git branch: 'main', url: 'https://github.com/Arsalwali00/E_Web.git'
+            }
+        }
+        stage('Navigate to projectdone') {
+            steps {
+                // Change directory to the folder where the files are located
+                dir('projectdone') {
+                    echo 'Navigated to projectdone folder'
+                }
             }
         }
         stage('Build Docker Image') {
             steps {
-                // Build Docker image for your website
-                sh 'docker build -t website-image .'
+                dir('projectdone') {
+                    // Build Docker image from projectdone folder
+                    sh 'docker build -t website-image .'
+                }
             }
         }
         stage('Run Tests') {
             steps {
-                // Optional: Add any tests you want to run
-                echo 'Running tests...'
+                dir('projectdone') {
+                    // Optional: Add your test steps here
+                    echo 'Running tests...'
+                }
             }
         }
         stage('Deploy Container') {
             steps {
-                // Run the Docker container locally
-                sh 'docker run -d -p 80:80 website-image'
+                dir('projectdone') {
+                    // Deploy Docker container, exposing it to port 80
+                    sh 'docker run -d -p 80:80 website-image'
+                }
             }
         }
     }
